@@ -1,0 +1,15 @@
+{
+  "name": "كاراتيه مصر — الاتحاد المصري للكاراتيه",
+  "short_name": "كاراتيه مصر",
+  "start_url": "/Karate-Egypt/",
+  "display": "standalone",
+  "background_color": "#0F172A",
+  "theme_color": "#0F172A",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
