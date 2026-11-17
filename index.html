@@ -136,6 +136,8 @@ nav button.on{color:var(--red)}nav svg{width:24px;height:24px;stroke:currentColo
 .badge.pending{background:var(--gold);color:#fff}
 .st{border-color:var(--gold);background:#FFFBEB}
 .pw{text-align:center;padding:10px 0}.pw .big{font-size:56px}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:46px;margin-top:14px;background:#fff;border:1.5px solid var(--line);border-radius:12px;font:inherit;font-weight:700;font-size:15px;color:var(--ink);cursor:pointer}
+.or{display:flex;align-items:center;gap:10px;color:var(--mut);font-size:12px;margin-top:14px}.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
 </style>
 </head>
 <body>
@@ -201,7 +203,11 @@ const I={cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18
 const ic=(d,z=16)=>`<svg class="ic" width="${z}" height="${z}" viewBox="0 0 24 24">${d}</svg>`;
 const MC=['#F59E0B','#64748B','#B45309'];
 const medal=i=>`<svg width="30" height="34" viewBox="0 0 24 27"><path d="M7 1l5 8 5-8" fill="none" stroke="${MC[i]}" stroke-width="2"/><circle cx="12" cy="17" r="8" fill="${MC[i]}"/><text x="12" y="21" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" font-family="Cairo,Arial">${i+1}</text></svg>`;
-const logo=z=>`<svg width="${z}" height="${z}" viewBox="0 0 48 48"><circle cx="24" cy="24" r="23" fill="#fff" stroke="#B91C1C" stroke-width="2"/><circle cx="24" cy="20" r="11" fill="#B91C1C"/><text x="24" y="24" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" font-family="Cairo,Arial">空手</text><rect x="3.5" y="31" width="41" height="6" rx="1" fill="#0F172A"/><path d="M21 37l-3 8M27 37l3 8" stroke="#0F172A" stroke-width="3" fill="none"/></svg>`;
+const logoSvg=z=>`<svg width="${z}" height="${z}" viewBox="0 0 48 48"><circle cx="24" cy="24" r="23" fill="#fff" stroke="#B91C1C" stroke-width="2"/><circle cx="24" cy="20" r="11" fill="#B91C1C"/><text x="24" y="24" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" font-family="Cairo,Arial">空手</text><rect x="3.5" y="31" width="41" height="6" rx="1" fill="#0F172A"/><path d="M21 37l-3 8M27 37l3 8" stroke="#0F172A" stroke-width="3" fill="none"/></svg>`;
+/* شعار الاتحاد: ضع ملف الشعار باسم logo.png بجانب index.html (أو غيّر المسار/الرابط هنا). إن لم يوجد يظهر الشعار البديل تلقائياً */
+const LOGO_URL='logo.png';
+const logo=z=>`<img src="${LOGO_URL}" width="${z}" height="${z}" alt="شعار الاتحاد المصري للكاراتيه" style="object-fit:contain;background:#fff;border-radius:50%;padding:2px" onerror="logoFail(this,${z})">`;
+function logoFail(i,z){i.onerror=null;i.outerHTML=logoSvg(z)}
 function toast(m){const e=document.createElement('div');e.className='toast';e.textContent=m;document.getElementById('app').append(e);setTimeout(()=>e.remove(),2600)}
 function sheet(h){closeS();const b=document.createElement('div');b.className='sheetbg';b.id='sh';b.innerHTML='<div class="sheet">'+h+'</div>';b.onclick=e=>{if(e.target===b)closeS()};document.getElementById('app').append(b)}
 function closeS(){const e=document.getElementById('sh');e&&e.remove()}
@@ -215,7 +221,7 @@ const col=n=>db.collection(n);
 function listen(){const Q=(c,f)=>col(c).orderBy('ts','desc').onSnapshot(sn=>{f(sn.docs.map(d=>({id:d.id,...d.data()})));render()},e=>console.warn(c,e.code));
  Q('tournaments',a=>S.T=a);Q('news',a=>S.N=a);Q('results',a=>S.R=a);Q('localRank',a=>S.PL=a);Q('wkfRank',a=>S.PW=a)}
 function clr(){RU.forEach(f=>f());RU=[];S.U=[];S.MY=[]}
-function onUser(d){S.boot=false;if(!d.exists){render();return}
+function onUser(d){S.boot=false;if(!d.exists){if(!S.creating){S.am='complete';S.auth=false}render();return}
  const m={id:d.id,...d.data()};const first=!S.me||S.me.id!==m.id;S.me=m;
  if(m.status==='rejected'){authErr('تم رفض طلب اعتماد حسابك. تواصل مع الاتحاد.');auth.signOut();return}
  S.role=m.role==='admin'?'admin':m.status==='approved'?'player':'pending';
@@ -228,32 +234,49 @@ let ERR='';const authErr=m=>{ERR=m};
 function startAuth(){auth.onAuthStateChanged(u=>{
  if(!u){S.boot=false;if(S.role!=='guest'||S.me){clr();lastRole='';S.role='guest';S.me=null;S.auth=false;S.am='in'}render();return}
  col('users').doc(u.uid).onSnapshot(onUser,e=>{S.boot=false;authErr('تعذّر قراءة بيانات حسابك');render()})})}
-const EM={'auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة','auth/wrong-password':'البريد أو كلمة المرور غير صحيحة','auth/user-not-found':'البريد أو كلمة المرور غير صحيحة','auth/invalid-email':'اكتب بريداً إلكترونياً صحيحاً','auth/email-already-in-use':'هذا البريد مسجل من قبل','auth/weak-password':'كلمة المرور 6 أحرف على الأقل','auth/network-request-failed':'تعذّر الاتصال بالإنترنت','auth/too-many-requests':'محاولات كثيرة، حاول لاحقاً'};
-function aerr(m){const e=document.getElementById('ae');if(e)e.textContent=m}
+const EM={'auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة','auth/wrong-password':'البريد أو كلمة المرور غير صحيحة','auth/user-not-found':'البريد أو كلمة المرور غير صحيحة','auth/invalid-email':'اكتب بريداً إلكترونياً صحيحاً','auth/email-already-in-use':'هذا البريد مسجل من قبل','auth/weak-password':'كلمة المرور 6 أحرف على الأقل','auth/network-request-failed':'تعذّر الاتصال بالإنترنت','auth/too-many-requests':'محاولات كثيرة، حاول لاحقاً','auth/operation-not-allowed':'فعّل طريقة الدخول من Firebase Authentication ← Sign-in method','auth/invalid-action-code':'الرابط غير صالح أو منتهي، اطلب رابطاً جديداً','auth/expired-action-code':'انتهت صلاحية الرابط، اطلب رابطاً جديداً','auth/unauthorized-domain':'أضف هذا النطاق في Authorized domains داخل Firebase','auth/account-exists-with-different-credential':'هذا البريد مسجل بطريقة دخول أخرى'};
+const GBTN=`<button class="gbtn" onclick="doGoogle()"><svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>الدخول بحساب جوجل</button>`;
+function sendLink(){const e=v('l1');if(!/^\S+@\S+\.\S+$/.test(e))return aerr('اكتب بريدك الإلكتروني أولاً');aerr('جارٍ إرسال الرابط…',1);
+ auth.sendSignInLinkToEmail(e,{url:location.origin+location.pathname,handleCodeInApp:true}).then(()=>{try{localStorage.setItem('kEmail',e)}catch(x){}aerr('تم إرسال رابط الدخول إلى بريدك. افتحه من نفس الجهاز وراجع الرسائل غير المرغوبة.',1)}).catch(x=>aerr(EM[x.code]||'تعذّر إرسال الرابط'))}
+function finLink(em){auth.signInWithEmailLink(em,location.href).then(()=>{try{localStorage.removeItem('kEmail')}catch(x){}history.replaceState(null,'',location.pathname)})
+ .catch(x=>{history.replaceState(null,'',location.pathname);ERR=EM[x.code]||'الرابط غير صالح أو منتهي';S.am='in';S.boot=false;render()})}
+function askLink(){const e=v('q1');e?finLink(e):aerr('اكتب البريد')}
+function handleLink(){if(!auth.isSignInWithEmailLink(location.href))return;let em='';try{em=localStorage.getItem('kEmail')||''}catch(x){}
+ if(em)finLink(em);else{S.boot=false;S.am='ask';S.auth=false;render()}}
+function doGoogle(){const pr=new firebase.auth.GoogleAuthProvider();pr.setCustomParameters({prompt:'select_account'});aerr('');
+ auth.signInWithPopup(pr).catch(x=>{if(x.code==='auth/popup-blocked'||x.code==='auth/operation-not-supported-in-this-environment')return auth.signInWithRedirect(pr);
+  if(x.code!=='auth/popup-closed-by-user'&&x.code!=='auth/cancelled-popup-request')aerr(EM[x.code]||'تعذّر الدخول بحساب جوجل')})}
+function doComplete(){const u=auth.currentUser;if(!u)return;const g=i=>v('c'+i);if(!g(1)||!g(4)||!g(7))return aerr('أكمل كل البيانات المطلوبة');aerr('جارٍ الإرسال…');S.creating=true;
+ col('users').doc(u.uid).set({name:g(1),email:u.email,club:g(4),belt:g(5),disc:g(6),no:g(7),role:'player',status:'pending',createdAt:Date.now()}).catch(()=>aerr('تعذّر حفظ البيانات')).finally(()=>{S.creating=false})}
+function aerr(m,ok){const e=document.getElementById('ae');if(e){e.textContent=m;e.style.color=ok?'var(--ok)':''}}
 function enterGuest(){S.role='guest';S.me=null;S.auth=true;S.tab='t';render()}
 function enterPend(){S.auth=true;S.tab='t';render()}
 function logout(){closeS();if(auth&&auth.currentUser)auth.signOut();S.auth=false;S.am='in';S.role='guest';S.me=null;lastRole='';render()}
 function doLogin(){const e=v('l1'),p=document.getElementById('l2').value;if(!e||!p)return aerr('أدخل البريد وكلمة المرور');aerr('جارٍ التحقق…');
  auth.signInWithEmailAndPassword(e,p).then(()=>{ERR=''}).catch(x=>aerr(EM[x.code]||'تعذّر تسجيل الدخول'))}
 function doSignup(){const g=i=>v('u'+i),e=g(2),p=document.getElementById('u3').value;
- if([1,2,4,7].some(i=>!g(i))||!p)return aerr('أكمل كل البيانات المطلوبة');aerr('جارٍ إنشاء الحساب…');
- auth.createUserWithEmailAndPassword(e,p).then(c=>col('users').doc(c.user.uid).set({name:g(1),email:e,club:g(4),belt:g(5),disc:g(6),no:g(7),role:'player',status:'pending',createdAt:Date.now()}).catch(x=>{c.user.delete();throw x})).catch(x=>aerr(EM[x.code]||'تعذّر إنشاء الحساب'))}
+ if([1,2,4,7].some(i=>!g(i))||!p)return aerr('أكمل كل البيانات المطلوبة');aerr('جارٍ إنشاء الحساب…');S.creating=true;
+ auth.createUserWithEmailAndPassword(e,p).then(c=>col('users').doc(c.user.uid).set({name:g(1),email:e,club:g(4),belt:g(5),disc:g(6),no:g(7),role:'player',status:'pending',createdAt:Date.now()}).catch(x=>{c.user.delete();throw x})).catch(x=>aerr(EM[x.code]||'تعذّر إنشاء الحساب')).finally(()=>{S.creating=false})}
 function authV(){
  const head=`<div class="ah">${logo(84)}<h2>كاراتيه مصر</h2><p>الاتحاد المصري للكاراتيه</p></div>`;
  if(!CONFIGURED)return `<div class="au">${head}<div class="ab"><div class="t" style="font-size:18px">⚙ إعداد Firebase مطلوب</div><p class="m" style="line-height:2;margin-top:8px">1) ضع مفاتيح مشروعك في firebaseConfig أول السكربت.<br>2) فعّل Email/Password في Authentication وأنشئ Firestore.<br>3) الصق قواعد الأمان (في تعليق أعلى الملف) في تبويب Rules.<br>4) افتح الملف من استضافة HTTPS.</p></div></div>`;
  if(S.boot)return `<div class="au">${head}<div class="ab"><p class="m" style="text-align:center">جارٍ التحميل…</p></div></div>`;
+ if(S.am==='ask')return `<div class="au">${head}<div class="ab"><div class="t" style="font-size:18px">أكّد بريدك الإلكتروني</div><p class="m" style="margin:4px 0">لإكمال الدخول بالرابط اكتب نفس البريد الذي وصله.</p><label>البريد الإلكتروني<input id="q1" type="email" dir="ltr"></label><div class="err" id="ae"></div><button class="btn b" onclick="askLink()">متابعة</button></div></div>`;
+ if(S.am==='complete'){const u=auth.currentUser||{};return `<div class="au">${head}<div class="ab"><div class="t" style="font-size:18px">أكمل بياناتك كلاعب</div><p class="m" style="margin:4px 0" dir="ltr">${esc(u.email||'')}</p>
+<label>الاسم الكامل<input id="c1" value="${esc(u.displayName||'')}"></label><label>النادي<input id="c4"></label><div class="row"><label style="flex:1">الحزام<select id="c5">${Object.keys(BELTS).map(b=>`<option>${b}</option>`).join('')}</select></label><label style="flex:1">التخصص<select id="c6"><option>كاتا</option><option>كوميتيه</option></select></label></div>
+<label>رقم القيد في الاتحاد<input id="c7" dir="ltr" placeholder="EGY-0000-0000"></label><div class="err" id="ae"></div><button class="btn b" style="margin-top:6px" onclick="doComplete()">إرسال طلب الاعتماد</button><button class="lnk" onclick="logout()">إلغاء</button></div></div>`}
  if(S.am==='pend')return `<div class="au">${head}<div class="ab"><div class="pw"><div class="big">⏳</div><div class="t" style="font-size:19px;margin:6px 0">حسابك قيد المراجعة</div><p class="m" style="line-height:1.9">في انتظار اعتماد المسؤول. لن يُفعَّل التسجيل في البطولات إلا بعد الموافقة.</p></div>
 <button class="btn b" onclick="enterPend()">تصفح التطبيق الآن</button><button class="btn o b" onclick="logout()">تسجيل الخروج</button></div></div>`;
  if(S.am==='up')return `<div class="au">${head}<div class="ab"><div class="t" style="font-size:18px">إنشاء حساب لاعب</div>
 <label>الاسم الكامل<input id="u1"></label><label>البريد الإلكتروني<input id="u2" type="email" dir="ltr" autocomplete="email"></label><label>كلمة المرور (6 أحرف على الأقل)<input id="u3" type="password" dir="ltr" autocomplete="new-password"></label>
 <label>النادي<input id="u4"></label><div class="row"><label style="flex:1">الحزام<select id="u5">${Object.keys(BELTS).map(b=>`<option>${b}</option>`).join('')}</select></label><label style="flex:1">التخصص<select id="u6"><option>كاتا</option><option>كوميتيه</option></select></label></div>
 <label>رقم القيد في الاتحاد<input id="u7" dir="ltr" placeholder="EGY-0000-0000"></label><div class="err" id="ae"></div>
-<button class="btn b" style="margin-top:6px" onclick="doSignup()">إنشاء الحساب</button><button class="lnk" onclick="S.am='in';render()">لديّ حساب بالفعل</button></div></div>`;
+<button class="btn b" style="margin-top:6px" onclick="doSignup()">إنشاء الحساب</button><div class="or">أو</div>${GBTN}<button class="lnk" onclick="S.am='in';render()">لديّ حساب بالفعل</button></div></div>`;
  const e=ERR;ERR='';
  return `<div class="au">${head}<div class="ab"><div class="t" style="font-size:18px">تسجيل الدخول</div>
 <label>البريد الإلكتروني<input id="l1" type="email" dir="ltr" autocomplete="email"></label><label>كلمة المرور<input id="l2" type="password" dir="ltr" autocomplete="current-password"></label><div class="err" id="ae">${esc(e)}</div>
 <button class="btn b" style="margin-top:6px" onclick="doLogin()">دخول</button><button class="btn o b" onclick="S.am='up';render()">إنشاء حساب جديد</button>
-<button class="btn b" style="background:var(--navy)" onclick="enterGuest()">الدخول كزائر (تصفح فقط)</button></div></div>`}
+<div class="or">أو بدون كلمة مرور</div>${GBTN}<button class="gbtn" onclick="sendLink()">✉️ الدخول برابط يُرسل لبريدك</button><button class="btn b" style="background:var(--navy)" onclick="enterGuest()">الدخول كزائر (تصفح فقط)</button></div></div>`}
 /* ---- العروض ---- */
 function vT(){return S.T.length?S.T.map(t=>{const reg=isP()&&S.MY.some(r=>r.tid===t.id);
 return `<div class="card"><div class="row sp"><span class="tag ${t.type==='كاتا'?'k':'r'}">${esc(t.type)}</span><span class="tag ok">متاح للتسجيل</span></div>
@@ -362,7 +385,7 @@ function render(){const au=document.getElementById('auth');
  document.getElementById('main').innerHTML=({t:vT,n:vN,r:vR,k:vK,a:vA})[S.tab]();
  const f=document.getElementById('fab'),B={t:['ارفع بطولة',fT],n:['إضافة خبر',()=>addMenu('n')],r:['رفع نتيجة',()=>addMenu('r')],k:S.scope==='محلي'?['إضافة للرانك',()=>addMenu('k')]:null}[S.tab];
  if(isA()&&B){f.style.display='flex';f.innerHTML=ic(I.plus,22)+'<span>'+B[0]+'</span>';f.onclick=()=>B[1]()}else f.style.display='none'}
-if(CONFIGURED){firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.firestore();listen();startAuth()}else S.boot=false;
+if(CONFIGURED){firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.firestore();listen();startAuth();handleLink()}else S.boot=false;
 render();
 </script>
 </body>
