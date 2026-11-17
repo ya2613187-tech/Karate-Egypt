@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>كاراتيه مصر</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--red:#B91C1C;--red2:#991B1B;--navy:#0F172A;--bg:#F8FAFC;--card:#FFFFFF;--ink:#0F172A;--mut:#64748B;--line:#E2E8F0;--chip:#F1F5F9;--gold:#F59E0B;--silver:#64748B;--bronze:#B45309;--ok:#15803D;color-scheme:light}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:'Cairo','Tajawal',Tahoma,Arial,sans-serif;background:#E2E8F0;color:var(--ink);display:flex;align-items:center;justify-content:center}
+#app{position:relative;width:100%;height:100vh;height:100dvh;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+@media(min-width:520px){#app{width:390px;height:844px;max-height:96vh;border-radius:40px;border:8px solid var(--navy);box-shadow:0 20px 50px rgba(15,23,42,.22)}}
+header{background:var(--navy);color:#fff;padding-top:env(safe-area-inset-top,0px);border-bottom:3px solid var(--red);flex:none}
+.hb{height:60px;padding:0 18px;display:flex;align-items:center;justify-content:space-between}
+h1{font-size:19px;font-weight:800}
+.badge{font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;background:rgba(255,255,255,.14);color:#fff}
+.badge.admin{background:var(--red)}.badge.player{background:#fff;color:var(--navy)}
+main{flex:1;overflow-y:auto;padding:16px 16px 96px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.row{display:flex;gap:8px;align-items:center}.sp{justify-content:space-between}
+.t{font-weight:800;font-size:16px}.m{color:var(--mut);font-size:13px}
+.ic{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.meta{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:13px;margin-top:8px}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--chip);color:var(--navy)}
+.tag.r{background:#FEE2E2;color:var(--red)}.tag.k{background:var(--navy);color:#fff}.tag.ok{background:#DCFCE7;color:var(--ok)}
+.btn{border:0;background:var(--red);color:#fff;font:inherit;font-weight:700;font-size:15px;min-height:46px;padding:0 18px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.btn:active{background:var(--red2)}.btn.o{background:#fff;color:var(--navy);border:1.5px solid var(--line)}.btn.b{width:100%;margin-top:14px}.btn.s{min-height:34px;padding:0 12px;font-size:12px}
+.btn.done{background:#DCFCE7;color:var(--ok);cursor:default}
+.pic{aspect-ratio:16/9;border-radius:12px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.9);font-size:52px;font-weight:800;background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 14px,transparent 14px 28px),linear-gradient(135deg,var(--navy) 0 58%,var(--red) 58%)}
+.pic.b{background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 14px,transparent 14px 28px),linear-gradient(135deg,var(--red) 0 42%,var(--navy) 42%)}
+.nt{font-weight:800;font-size:16px;line-height:1.6;margin-top:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.med{display:flex;gap:12px;align-items:center;padding:9px 0}.med.bd{border-bottom:1px solid var(--line)}
+.sb{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 14px;margin-bottom:12px;color:var(--mut)}
+.sb:focus-within{border-color:var(--red)}
+.sb input{border:0;margin:0;background:none;padding:12px 0;outline:none}
+.seg{display:flex;background:var(--chip);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:12px}
+.seg button{flex:1;border:0;font:inherit;font-weight:700;font-size:14px;min-height:38px;border-radius:9px;background:none;color:var(--navy);cursor:pointer}
+.seg button.on{background:var(--red);color:#fff}
+.bar{display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px}
+.chip{border:1px solid var(--line);font:inherit;font-size:13px;font-weight:600;padding:7px 14px;border-radius:99px;background:#fff;color:var(--navy);cursor:pointer;white-space:nowrap}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.rc{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px}
+.n{min-width:42px;height:42px;border-radius:12px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:var(--navy);flex:none}
+.n.g1{background:var(--gold);color:#fff}.n.g2{background:var(--silver);color:#fff}.n.g3{background:var(--bronze);color:#fff}
+.nm{font-weight:800;font-size:15px}
+.pts{font-weight:800;color:var(--red);font-size:18px;text-align:center;line-height:1.2;flex:none}
+.pts small{display:block;font-size:11px;font-weight:600;color:var(--mut)}
+.eb{margin-top:6px;border:1px solid var(--red);background:none;color:var(--red);font:inherit;font-size:11px;font-weight:700;padding:2px 10px;border-radius:99px;cursor:pointer}
+.empty{text-align:center;color:var(--mut);padding:30px 10px;font-size:14px}
+.id{background:var(--navy);color:#fff;border-radius:16px;padding:16px;border-inline-start:6px solid var(--red);margin-bottom:14px}
+.belt{display:inline-block;width:22px;height:8px;border-radius:2px;margin-inline-end:6px;border:1px solid var(--line)}
+input,select,textarea{width:100%;font:inherit;font-size:15px;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);margin-top:4px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--red);border-color:transparent}
+label{display:block;font-size:13px;font-weight:600;margin-top:12px}
+nav{flex:none;background:#fff;border-top:1px solid var(--line);display:flex;padding:8px 4px calc(8px + env(safe-area-inset-bottom,0px));position:absolute;bottom:0;left:0;right:0;z-index:6}
+nav button{flex:1;border:0;background:none;font:inherit;font-size:11px;font-weight:600;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:3px;padding:2px 0;cursor:pointer}
+nav button.on{color:var(--red)}nav svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.fab{position:absolute;left:16px;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:7;height:54px;padding:0 20px;border-radius:99px;border:0;background:var(--red);color:#fff;font:inherit;font-weight:800;font-size:15px;align-items:center;gap:8px;box-shadow:0 8px 20px rgba(185,28,28,.4);cursor:pointer}
+.sheetbg{position:absolute;inset:0;background:rgba(15,23,42,.55);z-index:20;display:flex;align-items:flex-end}
+.sheet{background:#fff;width:100%;border-radius:24px 24px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px));max-height:88%;overflow:auto}
+.toast{position:absolute;top:calc(72px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:99px;font-size:14px;font-weight:600;z-index:30;border:2px solid var(--red);white-space:nowrap}
+
+#auth{position:absolute;inset:0;z-index:15;background:var(--navy);overflow-y:auto;display:none}
+.au{min-height:100%;display:flex;flex-direction:column}
+.ah{text-align:center;color:#fff;padding:calc(env(safe-area-inset-top,0px) + 30px) 20px 22px}
+.ah h2{font-size:26px;font-weight:800;margin-top:10px}.ah p{color:#CBD5E1;font-size:13px}
+.ab{flex:1;background:var(--bg);border-radius:28px 28px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom,0px));border-top:4px solid var(--red)}
+.err{color:var(--red);font-size:13px;font-weight:600;min-height:20px;margin-top:8px}
+.lnk{background:none;border:0;font:inherit;font-size:13px;color:var(--mut);text-decoration:underline;cursor:pointer;display:block;margin:14px auto 0}
+.opt{display:flex;gap:12px;align-items:center;width:100%;text-align:right;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;font:inherit;cursor:pointer;color:var(--ink)}
+.opt b{font-size:26px}.opt span{font-weight:800;font-size:15px}.opt small{display:block;font-weight:400;color:var(--mut);font-size:12px;margin-top:2px}
+.dz{display:flex;flex-direction:column;align-items:center;gap:6px;border:2px dashed var(--red);border-radius:16px;padding:22px;color:var(--red);cursor:pointer;background:#FEF2F2;margin:0 0 4px}
+.paper{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;margin:12px 0}
+.paper img,.paper svg{display:block;width:100%;max-height:170px;object-fit:cover}.paper.sm{max-width:150px}
+.laser{position:absolute;left:0;right:0;top:0;height:3px;background:var(--red);box-shadow:0 0 12px 3px rgba(185,28,28,.55);animation:scan 1.1s ease-in-out infinite alternate}
+@keyframes scan{to{top:calc(100% - 3px)}}
+@media (prefers-reduced-motion:reduce){.laser{animation:none}}
+.okb{background:#DCFCE7;color:var(--ok);font-weight:700;font-size:13px;padding:8px 12px;border-radius:10px;margin:4px 0 6px}
+.rin{display:grid;grid-template-columns:1.2fr 1.2fr .8fr;gap:6px}.rin input{margin-top:6px;padding:9px 8px;font-size:13px}
+.wkf{border-radius:12px;padding:10px 12px;font-size:13px;font-weight:700;margin-bottom:12px;background:var(--navy);color:#fff}
+.wkf small{display:block;font-weight:400;color:#CBD5E1;font-size:11px}.wkf.loc{background:#FEE2E2;color:var(--red)}
+.seg.big button{font-size:13px}
+.dot{position:absolute;top:-4px;right:-8px;background:var(--red);color:#fff;font-size:10px;font-weight:800;min-width:17px;height:17px;border-radius:99px;display:flex;align-items:center;justify-content:center}
+.ni{position:relative;display:inline-flex}
+.badge.pending{background:var(--gold);color:#fff}
+.st{border-color:var(--gold);background:#FFFBEB}
+.pw{text-align:center;padding:10px 0}.pw .big{font-size:56px}
+</style>
+</head>
+<body>
+<div id="app">
+<header><div class="hb"><div class="row" style="gap:10px"><span id="lg"></span><h1 id="ttl"></h1></div><span class="badge" id="rb"></span></div></header>
+<main id="main"></main>
+<button id="fab" class="fab" style="display:none"></button>
+<nav id="nav"></nav>
+<div id="auth"></div>
+</div>
+<script>
+const BELTS={'أبيض':'#fff','أصفر':'#F5D000','برتقالي':'#F28C28','أخضر':'#2E9E4F','أزرق':'#2F6FD0','بني':'#7A4A24','أسود':'#111'};
+const CATS=['كاتا فردي رجال','كاتا فردي سيدات','كوميتيه -67 كجم','كوميتيه -75 كجم','كوميتيه سيدات -55 كجم','ناشئين تحت 14'];
+const PCATS=['بارا كاتا — إعاقة حركية','بارا كاتا — إعاقة بصرية','بارا كاتا — إعاقة ذهنية','بارا كوميتيه — إعاقة حركية'];
+const ADMIN={e:'admin@karate.eg',p:'Admin@2026'};
+const S={tab:'t',role:'guest',q:'',scope:'محلي',grp:'عام',cat:'الكل',
+me:{name:'أحمد حسن',club:'نادي الأهلي',belt:'بني',no:'EGY-2024-0457',age:19,regs:['بطولة الجمهورية للكاتا']},
+T:[
+{id:1,name:'بطولة الجمهورية للكاتا',city:'القاهرة — صالة ستاد القاهرة',d:'12',mo:'ديسمبر',type:'كاتا',fee:300},
+{id:2,name:'كأس مصر للكوميتيه',city:'الإسكندرية — قصر رياضة الأنفوشي',d:'09',mo:'يناير',type:'كوميتيه',fee:350},
+{id:3,name:'بطولة الأشبال والناشئين',city:'المنصورة — صالة جامعة المنصورة',d:'23',mo:'يناير',type:'كاتا',fee:200},
+{id:4,name:'بطولة أفريقيا المفتوحة',city:'شرم الشيخ — مركز المؤتمرات',d:'06',mo:'مارس',type:'كوميتيه',fee:600},
+{id:5,name:'دوري الأندية الكبرى',city:'الجيزة — صالة 6 أكتوبر',d:'20',mo:'مارس',type:'كوميتيه',fee:400}],
+N:[
+{id:1,t:'الاتحاد المصري يعلن موعد بطولة الجمهورية للكاتا',b:'أعلن الاتحاد المصري للكاراتيه فتح باب التسجيل لبطولة الجمهورية للكاتا بصالة ستاد القاهرة، وسيستمر التسجيل حتى نهاية الأسبوع الأول من ديسمبر.',dt:'منذ ساعتين',tg:'الاتحاد'},
+{id:2,t:'منتخب مصر يحصد 4 ميداليات في بطولة البحر المتوسط',b:'نجح منتخب مصر للكاراتيه في الصعود على منصة التتويج 4 مرات، بواقع ذهبيتين وفضية وبرونزية، في ختام منافسات البطولة.',dt:'أمس',tg:'بطولات'},
+{id:3,t:'دورة تحكيم جديدة لمعتمدي الاتحاد الدولي WKF',b:'ينظم الاتحاد دورة تأهيل للحكام بمشاركة 40 حكماً من مختلف المحافظات، وتشمل قواعد التقييم الجديدة في الكاتا.',dt:'منذ 3 أيام',tg:'الاتحاد'},
+{id:4,t:'اللجنة الفنية تعتمد قائمة الأوزان للموسم الجديد',b:'اعتمدت اللجنة الفنية جدول الأوزان والفئات العمرية لموسم 2026/2027، مع إضافة فئة جديدة للناشئين تحت 14 سنة.',dt:'منذ أسبوع',tg:'قرارات'}],
+R:[
+{id:1,name:'بطولة الجمهورية 2025',date:'نوفمبر 2025',rows:[
+{c:'كاتا فردي رجال',w:['محمد السيد — الأهلي','كريم عادل — الزمالك','يوسف رمضان — سموحة']},
+{c:'كوميتيه -67 كجم',w:['عمر خالد — الجزيرة','مصطفى نبيل — الأهلي','أحمد فوزي — وادي دجلة']},
+{c:'كاتا فردي سيدات',w:['نور الهدى — الزمالك','ملك أيمن — الأهلي','هنا طارق — الشمس']}]},
+{id:2,name:'كأس مصر للكوميتيه 2025',date:'سبتمبر 2025',rows:[
+{c:'كوميتيه -75 كجم',w:['إسلام جمال — الجيش','حسام وائل — الأهلي','بلال سامي — الزمالك']},
+{c:'كوميتيه سيدات -55 كجم',w:['سلمى هاني — الجزيرة','جنى مجدي — الشمس','رنا عصام — سموحة']}]}],
+P:[
+{n:'محمد السيد',c:'نادي الأهلي',cat:CATS[0],p:2840,s:'محلي'},{n:'كريم عادل',c:'نادي الزمالك',cat:CATS[0],p:2610,s:'محلي'},
+{n:'يوسف رمضان',c:'نادي سموحة',cat:CATS[0],p:2290,s:'محلي'},{n:'نور الهدى',c:'نادي الزمالك',cat:CATS[1],p:2720,s:'محلي'},
+{n:'ملك أيمن',c:'نادي الأهلي',cat:CATS[1],p:2410,s:'محلي'},{n:'عمر خالد',c:'نادي الجزيرة',cat:CATS[2],p:2980,s:'محلي'},
+{n:'مصطفى نبيل',c:'نادي الأهلي',cat:CATS[2],p:2530,s:'محلي'},{n:'إسلام جمال',c:'نادي الجيش',cat:CATS[3],p:2660,s:'محلي'},
+{n:'سلمى هاني',c:'نادي الجزيرة',cat:CATS[4],p:2590,s:'محلي'},{n:'أحمد حسن',c:'نادي الأهلي',cat:CATS[5],p:1480,s:'محلي'},
+{n:'Ryo Kiyuna',c:'Okinawa Dojo (اليابان)',cat:CATS[0],p:9120,s:'دولي'},{n:'Sandra Sánchez',c:'Madrid KC (إسبانيا)',cat:CATS[1],p:8870,s:'دولي'},
+{n:'Steven Da Costa',c:'Paris KC (فرنسا)',cat:CATS[2],p:8540,s:'دولي'},{n:'Feryal Abdelaziz',c:'القاهرة (مصر)',cat:CATS[4],p:7910,s:'دولي'},
+{n:'Ali Sofuoglu',c:'Istanbul KC (تركيا)',cat:CATS[3],p:7760,s:'دولي'},
+{n:'عبد الرحمن صلاح',c:'نادي الشمس',cat:PCATS[0],p:1920,s:'محلي',g:'ذوي الهمم'},{n:'مريم وليد',c:'نادي الأهلي',cat:PCATS[1],p:1760,s:'محلي',g:'ذوي الهمم'},
+{n:'زياد ماهر',c:'نادي الجزيرة',cat:PCATS[2],p:1540,s:'محلي',g:'ذوي الهمم'},{n:'ياسين علاء',c:'نادي الزمالك',cat:PCATS[0],p:1380,s:'محلي',g:'ذوي الهمم'},
+{n:'Karim Haddad',c:'Tunis KC (تونس)',cat:PCATS[0],p:5410,s:'دولي',g:'ذوي الهمم'},{n:'Elena Petrova',c:'Sofia KC (بلغاريا)',cat:PCATS[1],p:5120,s:'دولي',g:'ذوي الهمم'},
+{n:'Takumi Aoki',c:'Osaka Dojo (اليابان)',cat:PCATS[2],p:4890,s:'دولي',g:'ذوي الهمم'},{n:'Omar Nasser',c:'القاهرة (مصر)',cat:PCATS[3],p:4560,s:'دولي',g:'ذوي الهمم'}]};
+const isA=()=>S.role==='admin',isP=()=>S.role==='player';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const RL={guest:'زائر',player:'لاعب',admin:'مسؤول'};
+const IC={t:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>',
+n:'<path d="M5 4h11v16H7a2 2 0 0 1-2-2zM16 8h3v10a2 2 0 0 1-2 2M8 8h5M8 12h5M8 16h3"/>',
+r:'<path d="M5 20V10M12 20V4M19 20v-7"/>',k:'<path d="M4 20h4v-6H4zM10 20h4V8h-4zM16 20h4v-9h-4z"/>',
+a:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'};
+const TABS=[['t','البطولات'],['n','الأخبار'],['r','النتائج'],['k','الرانك'],['a','الحساب']];
+function toast(m){const e=document.createElement('div');e.className='toast';e.textContent=m;document.getElementById('app').append(e);setTimeout(()=>e.remove(),2200)}
+function sheet(html){closeS();const b=document.createElement('div');b.className='sheetbg';b.id='sh';b.innerHTML='<div class="sheet">'+html+'</div>';b.onclick=e=>{if(e.target===b)closeS()};document.getElementById('app').append(b)}
+function closeS(){const e=document.getElementById('sh');e&&e.remove()}
+const v=id=>document.getElementById(id).value.trim();
+function go(t){S.tab=t;render();scrollTo(0,0)}
+function setRole(r){S.role=r;render();toast('تم التبديل إلى حساب '+RL[r])}
+function render(){
+ document.getElementById('ttl').textContent=TABS.find(x=>x[0]===S.tab)[1];
+ document.getElementById('rb').textContent=RL[S.role];
+ document.getElementById('nav').innerHTML=TABS.map(([k,l])=>`<button class="${S.tab===k?'on':''}" onclick="go('${k}')"><svg viewBox="0 0 24 24">${IC[k==='a'?'a':k]}</svg>${l}</button>`).join('');
+ document.getElementById('main').innerHTML=({t:vT,n:vN,r:vR,k:vK,a:vA})[S.tab]();
+}
+/* البطولات */
+function vT(){return (isA()?'<button class="btn b" style="margin-bottom:12px" onclick="fT()">+ ارفع بطولة جديدة</button>':'')+
+S.T.map(t=>`<div class="card"><div class="row" style="align-items:flex-start"><div class="dt"><b>${t.d}</b><span>${t.mo}</span></div>
+<div style="flex:1"><div class="t">${esc(t.name)}</div><div class="m">📍 ${esc(t.city)}</div>
+<div class="row" style="margin-top:8px"><span class="tag ${t.type==='كاتا'?'k':'r'}">${t.type}</span><span class="tag">رسوم ${t.fee} ج.م</span></div></div></div>
+${S.role==='admin'?'':(S.me.regs.includes(t.name)&&isP()?'<div class="tag" style="margin-top:12px;background:#2E9E4F;color:#fff">✓ تم تسجيلك</div>':`<button class="btn b" style="margin-top:12px" onclick="fReg(${t.id})">سجل في البطولة</button>`)}</div>`).join('')}
+function fT(){sheet(`<div class="t">رفع بطولة جديدة</div><label>اسم البطولة<input id="a1"></label><label>المكان<input id="a2" placeholder="المدينة — الصالة"></label>
+<div class="row"><label style="flex:1">اليوم<input id="a3" type="number" min="1" max="31"></label><label style="flex:1">الشهر<select id="a4">${['يناير','فبراير','مارس','أبريل','مايو','يونيو','ديسمبر'].map(x=>`<option>${x}</option>`).join('')}</select></label></div>
+<div class="row"><label style="flex:1">النوع<select id="a5"><option>كاتا</option><option>كوميتيه</option></select></label><label style="flex:1">الرسوم (ج.م)<input id="a6" type="number"></label></div>
+<button class="btn b" style="margin-top:16px" onclick="saveT()">نشر البطولة</button>`)}
+function saveT(){const n=v('a1');if(!n||!v('a3'))return toast('اكتب اسم البطولة واليوم');
+ S.T.unshift({id:Date.now(),name:n,city:v('a2')||'سيُحدد لاحقاً',d:String(v('a3')).padStart(2,'0'),mo:v('a4'),type:v('a5'),fee:v('a6')||0});closeS();render();toast('تم نشر البطولة')}
+function fReg(id){if(S.role==='guest'){sheet(`<div class="t">سجّل دخولك أولاً</div><p class="m" style="margin:8px 0 16px">التسجيل في البطولات متاح لحسابات اللاعبين فقط.</p><button class="btn b" onclick="closeS();setRole('player')">الدخول كلاعب (تجريبي)</button>`);return}
+ const t=S.T.find(x=>x.id===id),m=S.me;
+ sheet(`<div class="t">التسجيل في ${esc(t.name)}</div><label>الاسم<input id="r1" value="${esc(isP()?m.name:'')}"></label><label>النادي<input id="r2" value="${esc(isP()?m.club:'')}"></label>
+<label>الحزام<select id="r3">${Object.keys(BELTS).map(b=>`<option ${b===m.belt?'selected':''}>${b}</option>`).join('')}</select></label>
+<div class="row"><label style="flex:1">السن<input id="r4" type="number" value="${m.age}"></label><label style="flex:1">التخصص<select id="r5"><option ${t.type==='كاتا'?'selected':''}>كاتا</option><option ${t.type==='كوميتيه'?'selected':''}>كوميتيه</option></select></label></div>
+<button class="btn b" style="margin-top:16px" onclick="saveReg(${id})">تأكيد التسجيل</button>`)}
+function saveReg(id){if(!v('r1')||!v('r2'))return toast('أكمل الاسم والنادي');const t=S.T.find(x=>x.id===id);
+ if(isP()&&!S.me.regs.includes(t.name))S.me.regs.push(t.name);closeS();render();toast('تم تسجيلك في البطولة')}
+/* الأخبار */
+function vN(){return (isA()?'<button class="btn b" style="margin-bottom:12px" onclick="fN()">+ إضافة خبر</button>':'')+
+S.N.map((n,i)=>`<div class="card" onclick="openN(${n.id})" style="cursor:pointer"><div class="pic ${i%2?'b':''}">空手</div><span class="tag r">${esc(n.tg)}</span>
+<div class="t" style="margin-top:8px">${esc(n.t)}</div><div class="m" style="margin-top:4px">${esc(n.b.slice(0,90))}…</div><div class="m" style="margin-top:6px;font-size:12px">${n.dt}</div></div>`).join('')}
+function openN(id){const n=S.N.find(x=>x.id===id);sheet(`<div class="pic">空手</div><span class="tag r">${esc(n.tg)}</span><div class="t" style="margin:8px 0">${esc(n.t)}</div><p style="line-height:1.9">${esc(n.b)}</p><div class="m" style="margin-top:8px">${n.dt}</div>`)}
+function fN(){sheet(`<div class="t">إضافة خبر</div><label>العنوان<input id="n1"></label><label>التصنيف<select id="n3"><option>الاتحاد</option><option>بطولات</option><option>قرارات</option></select></label><label>التفاصيل<textarea id="n2" rows="5"></textarea></label><button class="btn b" style="margin-top:16px" onclick="saveN()">نشر الخبر</button>`)}
+function saveN(){if(!v('n1')||!v('n2'))return toast('اكتب العنوان والتفاصيل');S.N.unshift({id:Date.now(),t:v('n1'),b:v('n2'),tg:v('n3'),dt:'الآن'});closeS();render();toast('تم نشر الخبر')}
+/* النتائج */
+function vR(){return (isA()?'<button class="btn b" style="margin-bottom:12px" onclick="fR()">+ رفع نتيجة</button>':'')+
+S.R.map(r=>`<div class="card"><div class="t">${esc(r.name)}</div><div class="m">${esc(r.date)}</div>${r.rows.map(x=>`<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line)"><span class="tag k">${esc(x.c)}</span>
+${x.w.map((w,i)=>`<div class="med"><span class="n g${i+1}">${i+1}</span>${esc(w)}</div>`).join('')}</div>`).join('')}</div>`).join('')}
+function fR(){sheet(`<div class="t">رفع نتيجة</div><label>البطولة<select id="x0">${S.R.map(r=>`<option value="${r.id}">${esc(r.name)}</option>`).join('')}<option value="new">+ بطولة جديدة</option></select></label>
+<label>اسم البطولة الجديدة (اختياري)<input id="x5"></label><label>الفئة<select id="x1">${CATS.map(c=>`<option>${c}</option>`).join('')}</select></label>
+<label>المركز الأول<input id="x2" placeholder="الاسم — النادي"></label><label>المركز الثاني<input id="x3"></label><label>المركز الثالث<input id="x4"></label>
+<button class="btn b" style="margin-top:16px" onclick="saveR()">نشر النتيجة</button>`)}
+function saveR(){const w=[v('x2'),v('x3'),v('x4')];if(w.some(x=>!x))return toast('أدخل المراكز الثلاثة');
+ let r=S.R.find(x=>x.id==v('x0'));if(!r){r={id:Date.now(),name:v('x5')||'بطولة جديدة',date:'ديسمبر 2026',rows:[]};S.R.unshift(r)}
+ r.rows.unshift({c:v('x1'),w});closeS();render();toast('تم رفع النتيجة')}
+/* الرانك */
+function vK(){const L=S.P.filter(p=>p.s===S.scope&&(p.g||'عام')===S.grp&&(S.cat==='الكل'||p.cat===S.cat)&&(p.n+p.c).toLowerCase().includes(S.q.toLowerCase())).sort((a,b)=>b.p-a.p);
+ return `<div class="seg">${['عام','ذوي الهمم'].map(g=>`<button class="${S.grp===g?'on':''}" onclick="S.grp='${g}';S.cat='الكل';render()">${g==='عام'?'التصنيف العام':'ذوي الهمم ♿'}</button>`).join('')}</div><div class="seg">${['محلي','دولي'].map(s=>`<button class="${S.scope===s?'on':''}" onclick="S.scope='${s}';render()">${s}</button>`).join('')}</div>
+<input id="sq" placeholder="ابحث بالاسم أو النادي..." value="${esc(S.q)}" oninput="S.q=this.value;upd()" style="margin:0 0 10px">
+<div class="bar" style="overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px">${['الكل',...(S.grp==='عام'?CATS:PCATS)].map(c=>`<button class="chip ${S.cat===c?'on':''}" style="white-space:nowrap" onclick="S.cat='${c}';render()">${c}</button>`).join('')}</div>
+<div class="card" id="rl">${rows(L)}</div>`}
+function rows(L){return L.length?L.map((p,i)=>`<div class="rk"><span class="n ${i<3?'g'+(i+1):''}">${i+1}</span><div style="flex:1"><div style="font-weight:700">${esc(p.n)}</div><div class="m">${esc(p.c)} · ${esc(p.cat)}</div></div>
+<div class="pts">${p.p.toLocaleString('ar-EG')}<div class="m" style="font-size:11px;font-weight:400">نقطة</div>${isA()?`<button class="btn s" onclick="fP('${esc(p.n)}')">تعديل</button>`:''}</div></div>`).join(''):'<div class="m" style="text-align:center;padding:20px">لا نتائج مطابقة. جرّب اسماً أو فئة أخرى.</div>'}
+function upd(){const x=document.getElementById('sq'),pos=x.selectionStart;render();const y=document.getElementById('sq');y.focus();y.setSelectionRange(pos,pos)}
+function fP(n){const p=S.P.find(x=>x.n===n&&x.s===S.scope);sheet(`<div class="t">تعديل نقاط ${esc(p.n)}</div><label>النقاط<input id="p1" type="number" value="${p.p}"></label><button class="btn b" style="margin-top:16px" onclick="saveP('${esc(n)}')">حفظ النقاط</button>`)}
+function saveP(n){const p=S.P.find(x=>x.n===n&&x.s===S.scope);const val=parseInt(v('p1'));if(isNaN(val))return toast('أدخل رقماً صحيحاً');p.p=val;closeS();render();toast('تم تحديث النقاط')}
+/* الحساب */
+function vA(){const m=S.me;
+ const seg=`<div class="card"><div class="m" style="margin-bottom:8px">تبديل سريع بين الصلاحيات (للعرض)</div><div class="seg" style="margin:0">${['guest','player'].map(r=>`<button class="${S.role===r?'on':''}" onclick="setRole('${r}')">${RL[r]}</button>`).join('')}</div></div>`;
+ let body='';
+ if(S.role==='player')body=`<div class="id"><div class="row sp"><div class="t" style="font-size:18px">${esc(m.name)}</div><span style="font-size:28px">🥋</span></div>
+<div style="margin-top:10px;line-height:2"><div>🏛 ${esc(m.club)}</div><div><span class="belt" style="background:${BELTS[m.belt]}"></span>حزام ${esc(m.belt)}</div><div>🆔 رقم القيد: ${esc(m.no)}</div></div></div>
+<div class="card"><div class="t">بطولاتي المسجل بها</div>${m.regs.length?m.regs.map(r=>`<div class="med">✓ ${esc(r)}</div>`).join(''):'<div class="m">لم تسجل في أي بطولة بعد.</div>'}</div>
+<button class="btn o b" onclick="setRole('guest')">تسجيل الخروج</button>`;
+ else if(S.role==='admin')body=`<div class="card"><div class="t">لوحة المسؤول</div><p class="m" style="margin:6px 0">مفتوح لك: رفع بطولة، إضافة خبر، رفع نتيجة، وتعديل نقاط الرانك.</p>
+<div class="row" style="flex-wrap:wrap"><button class="btn s" onclick="go('t')">البطولات</button><button class="btn s" onclick="go('n')">الأخبار</button><button class="btn s" onclick="go('r')">النتائج</button><button class="btn s" onclick="go('k')">الرانك</button></div></div><button class="btn o b" onclick="setRole('guest')">تسجيل الخروج</button>`;
+ else body=`<div class="card"><div class="t">تسجيل الدخول</div><p class="m" style="margin:4px 0">أنت تتصفح كزائر بدون صلاحيات تسجيل أو تعديل.</p>
+<label>البريد الإلكتروني<input id="e1" type="email" dir="ltr" placeholder="admin@karate.eg"></label><label>كلمة المرور<input id="e2" type="password" dir="ltr"></label>
+<button class="btn b" style="margin-top:14px" onclick="login()">دخول</button><p class="m" style="margin-top:10px;font-size:12px">تجريبي: أي بريد يدخل كلاعب. حساب المسؤول يتطلب بيانات خاصة يسلمها الاتحاد.</p></div>`;
+ return seg+body}
+function login(){const e=v('e1'),p=v('e2');if(!e||!p)return toast('أدخل البريد وكلمة المرور');if(e.toLowerCase().startsWith('admin')){if(e.toLowerCase()===ADMIN.e&&p===ADMIN.p)return setRole('admin');return toast('بيانات المسؤول غير صحيحة')}setRole('player')}
+/* ===== إعادة التصميم ===== */
+const ic=(d,z=16)=>`<svg class="ic" width="${z}" height="${z}" viewBox="0 0 24 24">${d}</svg>`;
+const I={cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',pin:'<path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',coin:'<circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h4a1.5 1.5 0 0 1 0 3h-3a1.5 1.5 0 0 0 0 3h4"/>',srch:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',plus:'<path d="M12 5v14M5 12h14"/>'};
+const MC=['#F59E0B','#64748B','#B45309'];
+const medal=i=>`<svg width="30" height="34" viewBox="0 0 24 27"><path d="M7 1l5 8 5-8" fill="none" stroke="${MC[i]}" stroke-width="2"/><circle cx="12" cy="17" r="8" fill="${MC[i]}"/><text x="12" y="21" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" font-family="Cairo,Arial">${i+1}</text></svg>`;
+function go(t){S.tab=t;render();document.getElementById('main').scrollTop=0}
+function render(){
+ document.getElementById('ttl').textContent=TABS.find(x=>x[0]===S.tab)[1];
+ const rb=document.getElementById('rb');rb.textContent=RL[S.role];rb.className='badge '+S.role;
+ document.getElementById('nav').innerHTML=TABS.map(([k,l])=>`<button class="${S.tab===k?'on':''}" onclick="go('${k}')"><svg viewBox="0 0 24 24">${IC[k]}</svg>${l}</button>`).join('');
+ document.getElementById('main').innerHTML=({t:vT,n:vN,r:vR,k:vK,a:vA})[S.tab]();
+ const f=document.getElementById('fab'),B={t:['ارفع بطولة',fT],n:['إضافة خبر',fN],r:['رفع نتيجة',fR]}[S.tab];
+ if(isA()&&B){f.style.display='flex';f.innerHTML=ic(I.plus,22)+'<span>'+B[0]+'</span>';f.onclick=()=>B[1]()}else f.style.display='none'}
+function vT(){return S.T.map(t=>{const reg=isP()&&S.me.regs.includes(t.name);
+return `<div class="card"><div class="row sp"><span class="tag ${t.type==='كاتا'?'k':'r'}">${t.type}</span><span class="tag ok">متاح للتسجيل</span></div>
+<div class="t" style="margin-top:12px;font-size:17px">${esc(t.name)}</div>
+<div class="meta">${ic(I.cal)}${t.d} ${t.mo}</div><div class="meta">${ic(I.pin)}${esc(t.city)}</div><div class="meta">${ic(I.coin)}رسوم التسجيل ${t.fee} ج.م</div>
+${isA()?'':reg?'<div class="btn b done">✓ تم تسجيلك</div>':`<button class="btn b" onclick="fReg(${t.id})">سجل الآن</button>`}</div>`}).join('')}
+function vN(){return S.N.map((n,i)=>`<div class="card" onclick="openN(${n.id})" style="cursor:pointer"><div class="pic ${i%2?'b':''}">空手</div>
+<div class="row sp" style="margin-top:12px"><span class="tag r">${esc(n.tg)}</span><span class="m">${n.dt}</span></div><div class="nt">${esc(n.t)}</div></div>`).join('')}
+function vR(){return S.R.flatMap(r=>r.rows.map(x=>`<div class="card"><div class="m">${esc(r.name)} · ${esc(r.date)}</div><div class="t" style="margin:2px 0 8px">${esc(x.c)}</div>
+${x.w.map((w,i)=>{const a=w.split(' — ');return `<div class="med ${i<2?'bd':''}">${medal(i)}<div style="flex:1;font-weight:700">${esc(a[0])}</div><span class="m">${esc(a[1]||'')}</span></div>`}).join('')}</div>`)).join('')}
+function KL(){return S.P.filter(p=>p.s===S.scope&&(p.g||'عام')===S.grp&&(S.cat==='الكل'||p.cat===S.cat)&&(p.n+p.c).toLowerCase().includes(S.q.toLowerCase())).sort((a,b)=>b.p-a.p)}
+function vK(){return `<div class="sb">${ic(I.srch,18)}<input id="sq" placeholder="ابحث بالاسم أو النادي..." value="${esc(S.q)}" oninput="S.q=this.value;upd()"></div>
+<div class="seg">${['محلي','دولي'].map(s=>`<button class="${S.scope===s?'on':''}" onclick="S.scope='${s}';render()">${s}</button>`).join('')}</div>
+<div class="seg">${['عام','ذوي الهمم'].map(g=>`<button class="${S.grp===g?'on':''}" onclick="S.grp='${g}';S.cat='الكل';render()">${g==='عام'?'التصنيف العام':'ذوي الهمم ♿'}</button>`).join('')}</div>
+<div class="bar">${['الكل',...(S.grp==='عام'?CATS:PCATS)].map(c=>`<button class="chip ${S.cat===c?'on':''}" onclick="S.cat='${c}';render()">${c}</button>`).join('')}</div>
+<div id="rl">${rows(KL())}</div>`}
+function rows(L){return L.length?L.map((p,i)=>`<div class="rc"><span class="n ${i<3?'g'+(i+1):''}">#${i+1}</span><div style="flex:1;min-width:0"><div class="nm">${esc(p.n)}</div><div class="m">${esc(p.c)}</div><div class="m" style="font-size:11px">${esc(p.cat)}</div></div>
+<div class="pts">${p.p.toLocaleString('ar-EG')}<small>نقطة</small>${isA()?`<button class="eb" onclick="fP('${esc(p.n)}')">تعديل</button>`:''}</div></div>`).join(''):'<div class="empty">لا توجد نتائج مطابقة. جرّب اسماً أو فئة أخرى.</div>'}
+function upd(){document.getElementById('rl').innerHTML=rows(KL())}
+
+/* ===== v2: دخول إجباري + اعتماد + Scan + WKF ===== */
+const KEY='karate_v2';
+const demoAccts=()=>[
+{name:'أحمد حسن',email:'player@karate.eg',pass:'1234',club:'نادي الأهلي',belt:'بني',disc:'كاتا',no:'EGY-2024-0457',age:19,regs:['بطولة الجمهورية للكاتا'],status:'approved'},
+{name:'خالد مصطفى',email:'khaled@karate.eg',pass:'1234',club:'نادي سموحة',belt:'أسود',disc:'كوميتيه',no:'EGY-2026-0611',age:22,regs:[],status:'pending'},
+{name:'سارة عبد الله',email:'sara@karate.eg',pass:'1234',club:'نادي الجزيرة',belt:'أخضر',disc:'كاتا',no:'EGY-2026-0618',age:16,regs:[],status:'pending'}];
+Object.assign(S,{auth:false,am:'in',demo:false,A:demoAccts()});
+RL.pending='قيد المراجعة';
+function save(){try{localStorage.setItem(KEY,JSON.stringify({T:S.T,N:S.N,R:S.R,P:S.P,A:S.A}))}catch(e){}}
+try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d)Object.assign(S,d)}catch(e){}
+S.me=S.A[0];
+function resetAll(){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}
+IC.r='<circle cx="12" cy="15" r="5"/><path d="M8.5 3l3.5 7 3.5-7"/>';
+IC.k='<path d="M2 10h20v4H2z"/><path d="M10 14l-2 6M14 14l2 6"/>';
+Object.assign(I,{up:'<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>'});
+const logo=z=>`<svg width="${z}" height="${z}" viewBox="0 0 48 48"><circle cx="24" cy="24" r="23" fill="#fff" stroke="#B91C1C" stroke-width="2"/><circle cx="24" cy="20" r="11" fill="#B91C1C"/><text x="24" y="24" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" font-family="Cairo,Arial">空手</text><rect x="3.5" y="31" width="41" height="6" rx="1" fill="#0F172A"/><path d="M21 37l-3 8M27 37l3 8" stroke="#0F172A" stroke-width="3" fill="none"/></svg>`;
+const pendN=()=>S.A.filter(a=>a.status==='pending').length;
+function enter(r,a){S.role=r;if(a)S.me=a;S.auth=true;S.tab='t';closeS();render();document.getElementById('main').scrollTop=0}
+function logout(){closeS();S.auth=false;S.am='in';S.role='guest';render()}
+function aerr(m){const e=document.getElementById('ae');if(e)e.textContent=m}
+function authV(){
+ const head=`<div class="ah">${logo(84)}<h2>كاراتيه مصر</h2><p>الاتحاد المصري للكاراتيه</p></div>`;
+ if(S.am==='pend')return `<div class="au">${head}<div class="ab"><div class="pw"><div class="big">⏳</div><div class="t" style="font-size:19px;margin:6px 0">حسابك قيد المراجعة</div><p class="m" style="line-height:1.9">في انتظار اعتماد المسؤول. لن يُفعَّل التسجيل في البطولات إلا بعد الموافقة.</p></div>
+<button class="btn b" onclick="enter('pending')">تصفح التطبيق الآن</button><button class="btn o b" onclick="logout()">العودة لتسجيل الدخول</button></div></div>`;
+ if(S.am==='up')return `<div class="au">${head}<div class="ab"><div class="t" style="font-size:18px">إنشاء حساب لاعب</div>
+<label>الاسم الكامل<input id="u1"></label><label>البريد الإلكتروني<input id="u2" type="email" dir="ltr"></label><label>كلمة المرور<input id="u3" type="password" dir="ltr"></label>
+<label>النادي<input id="u4"></label><div class="row"><label style="flex:1">الحزام<select id="u5">${Object.keys(BELTS).map(b=>`<option>${b}</option>`).join('')}</select></label><label style="flex:1">التخصص<select id="u6"><option>كاتا</option><option>كوميتيه</option></select></label></div>
+<label>رقم القيد في الاتحاد<input id="u7" dir="ltr" placeholder="EGY-0000-0000"></label><div class="err" id="ae"></div>
+<button class="btn b" style="margin-top:6px" onclick="doSignup()">إنشاء الحساب</button><button class="lnk" onclick="S.am='in';render()">لديّ حساب بالفعل</button></div></div>`;
+ return `<div class="au">${head}<div class="ab"><div class="t" style="font-size:18px">تسجيل الدخول</div>
+<label>البريد الإلكتروني<input id="l1" type="email" dir="ltr"></label><label>كلمة المرور<input id="l2" type="password" dir="ltr"></label><div class="err" id="ae"></div>
+<button class="btn b" style="margin-top:6px" onclick="doLogin()">دخول</button><button class="btn o b" onclick="S.am='up';render()">إنشاء حساب جديد</button>
+<button class="btn d b" style="background:var(--navy)" onclick="enter('guest')">الدخول كزائر (تصفح فقط)</button><button class="lnk" onclick="demoSheet()">وضع العرض التجريبي</button></div></div>`}
+function doLogin(){const e=v('l1').toLowerCase(),p=v('l2');if(!e||!p)return aerr('أدخل البريد وكلمة المرور');
+ if(e===ADMIN.e&&p===ADMIN.p)return enter('admin');
+ const a=S.A.find(x=>x.email===e&&x.pass===p);if(!a)return aerr('البريد أو كلمة المرور غير صحيحة');
+ if(a.status==='rejected')return aerr('تم رفض طلب اعتماد حسابك. تواصل مع الاتحاد.');
+ if(a.status==='pending'){S.me=a;S.role='pending';S.am='pend';return render()}enter('player',a)}
+function doSignup(){const g=i=>v('u'+i),e=g(2).toLowerCase();
+ if([1,2,3,4,7].some(i=>!g(i)))return aerr('أكمل كل البيانات المطلوبة');
+ if(!/^\S+@\S+\.\S+$/.test(e))return aerr('اكتب بريداً إلكترونياً صحيحاً');
+ if(g(3).length<4)return aerr('كلمة المرور 4 أحرف على الأقل');
+ if(e===ADMIN.e||S.A.some(a=>a.email===e))return aerr('هذا البريد مسجل من قبل');
+ const a={name:g(1),email:e,pass:g(3),club:g(4),belt:g(5),disc:g(6),no:g(7),age:'',regs:[],status:'pending'};
+ S.A.push(a);S.me=a;S.role='pending';S.am='pend';render()}
+function decide(em,ok){const a=S.A.find(x=>x.email===em);a.status=ok?'approved':'rejected';render();toast(ok?'تم اعتماد اللاعب':'تم رفض الطلب')}
+function demoSheet(){if(!S.demo)return sheet(`<div class="t">وضع العرض التجريبي</div><p class="m" style="margin:4px 0">أدخل رمز العرض لفتح التبديل السريع بين الحسابات.</p><label>رمز العرض<input id="dp" type="password" inputmode="numeric" dir="ltr"></label><button class="btn b" onclick="demoPin()">فتح</button>`);
+ sheet(`<div class="t">التبديل السريع (للعرض)</div><p class="m" style="margin:4px 0 12px">اختر نوع الحساب لاستعراض صلاحياته.</p>
+${[['admin','🛡️','حساب مسؤول'],['player','🥋','لاعب معتمد'],['pending','⏳','لاعب قيد الانتظار'],['guest','👤','زائر']].map(([r,i,l])=>`<button class="opt" onclick="dm('${r}')"><b>${i}</b><span>${l}</span></button>`).join('')}
+<button class="btn o b" onclick="resetAll()">إعادة ضبط البيانات التجريبية</button>`)}
+function demoPin(){if(v('dp')==='2026'){S.demo=true;demoSheet()}else toast('الرمز غير صحيح')}
+function dm(r){if(r==='admin')return enter('admin');if(r==='guest')return enter('guest');
+ if(r==='player')return enter('player',S.A.find(a=>a.email==='player@karate.eg')||S.A[0]);
+ const a=S.A.find(x=>x.status==='pending');if(!a)return toast('لا يوجد طلب معلق — أعد ضبط البيانات');enter('pending',a)}
+const _fReg=fReg;
+fReg=function(id){if(S.role==='guest')return sheet(`<div class="t">سجّل دخولك أولاً</div><p class="m" style="margin:8px 0 16px">التسجيل في البطولات متاح للاعبين المعتمدين فقط.</p><button class="btn b" onclick="logout()">تسجيل الدخول / إنشاء حساب</button>`);
+ if(S.role==='pending')return sheet(`<div class="t">⏳ حسابك قيد المراجعة</div><p class="m" style="margin:8px 0">سيُفعَّل التسجيل في البطولات بعد اعتماد المسؤول لحسابك.</p><button class="btn b" onclick="closeS()">حسناً</button>`);_fReg(id)};
+/* الحساب */
+const idCard=m=>`<div class="id"><div class="row sp"><div class="t" style="font-size:18px">${esc(m.name)}</div><span style="font-size:28px">🥋</span></div><div style="margin-top:10px;line-height:2"><div>🏛 ${esc(m.club)}</div><div><span class="belt" style="background:${BELTS[m.belt]}"></span>حزام ${esc(m.belt)} · ${esc(m.disc||'')}</div><div>🆔 رقم القيد: ${esc(m.no)}</div></div></div>`;
+function vA(){const m=S.me,r=S.role;let b='';
+ if(r==='player')b=idCard(m)+`<div class="card"><div class="row sp"><div class="t">بطولاتي المسجل بها</div><span class="tag ok">حساب معتمد</span></div>${m.regs.length?m.regs.map(x=>`<div class="med">🏆 ${esc(x)}</div>`).join(''):'<div class="m" style="margin-top:8px">لم تسجل في أي بطولة بعد.</div>'}</div>`;
+ else if(r==='pending')b=`<div class="card st"><div class="t">⏳ حسابك قيد المراجعة</div><p class="m" style="margin-top:6px">في انتظار اعتماد المسؤول. لا يمكنك التسجيل في البطولات قبل الموافقة.</p></div>`+idCard(m);
+ else if(r==='admin'){const L=S.A.filter(a=>a.status==='pending');
+  b=`<div class="card"><div class="row sp"><div class="t">طلبات اعتماد اللاعبين</div><span class="tag r">${L.length} معلّق</span></div>${L.length?L.map(a=>`<div style="padding:12px 0;border-top:1px solid var(--line);margin-top:10px"><div class="nm">${esc(a.name)}</div>
+<div class="m"><span class="belt" style="background:${BELTS[a.belt]}"></span>${esc(a.belt)} · ${esc(a.disc)} · ${esc(a.club)}</div><div class="m">🆔 ${esc(a.no)}</div>
+<div class="row" style="margin-top:10px"><button class="btn s" style="flex:1" onclick="decide('${esc(a.email)}',true)">قبول</button><button class="btn s o" style="flex:1" onclick="decide('${esc(a.email)}',false)">رفض</button></div></div>`).join(''):'<div class="empty">لا توجد طلبات معلقة.</div>'}</div>
+<div class="card"><div class="t">ملخص اللاعبين</div><div class="m" style="margin-top:6px">معتمد: ${S.A.filter(a=>a.status==='approved').length} · مرفوض: ${S.A.filter(a=>a.status==='rejected').length}</div></div>`}
+ else b=`<div class="card"><div class="t">أنت تتصفح كزائر</div><p class="m" style="margin:6px 0">التصفح فقط بدون تسجيل في البطولات.</p><button class="btn b" onclick="logout()">تسجيل الدخول / إنشاء حساب</button></div>`;
+ return b+(r==='guest'?'':'<button class="btn o b" onclick="logout()">تسجيل الخروج</button>')+'<button class="btn o b" onclick="demoSheet()">⚙ وضع العرض التجريبي</button>'}
+/* الرانك: WKF منفصل */
+function vK(){const w=S.scope==='دولي';
+ return `<div class="seg big">${[['دولي','التصنيف العالمي (WKF)'],['محلي','التصنيف المحلي']].map(([k,l])=>`<button class="${S.scope===k?'on':''}" onclick="S.scope='${k}';render()">${l}</button>`).join('')}</div>
+${w?'<div class="wkf">🌐 محدّث تلقائياً من WKF — للقراءة فقط<small>أرقام توضيحية في النسخة التجريبية</small></div>':`<div class="wkf loc">🇪🇬 تصنيف الاتحاد الوطني${isA()?' — يديره المسؤول يدوياً أو بالمسح الضوئي':''}</div>`}
+<div class="sb">${ic(I.srch,18)}<input id="sq" placeholder="ابحث بالاسم أو النادي..." value="${esc(S.q)}" oninput="S.q=this.value;upd()"></div>
+<div class="seg">${['عام','ذوي الهمم'].map(g=>`<button class="${S.grp===g?'on':''}" onclick="S.grp='${g}';S.cat='الكل';render()">${g==='عام'?'التصنيف العام':'ذوي الهمم ♿'}</button>`).join('')}</div>
+<div class="bar">${['الكل',...(S.grp==='عام'?CATS:PCATS)].map(c=>`<button class="chip ${S.cat===c?'on':''}" onclick="S.cat='${c}';render()">${c}</button>`).join('')}</div><div id="rl">${rows(KL())}</div>`}
+function rows(L){const ed=isA()&&S.scope==='محلي';return L.length?L.map((p,i)=>`<div class="rc"><span class="n ${i<3?'g'+(i+1):''}">#${i+1}</span><div style="flex:1;min-width:0"><div class="nm">${esc(p.n)}</div><div class="m">${esc(p.c)}</div><div class="m" style="font-size:11px">${esc(p.cat)}</div></div>
+<div class="pts">${p.p.toLocaleString('ar-EG')}<small>نقطة</small>${ed?`<button class="eb" onclick="fP('${esc(p.n)}')">تعديل</button>`:''}</div></div>`).join(''):'<div class="empty">لا توجد نتائج مطابقة. جرّب اسماً أو فئة أخرى.</div>'}
+/* إضافة: يدوي أو Scan */
+const AL={n:'إضافة خبر',r:'رفع نتيجة',k:'إضافة للرانك المحلي'};
+function addMenu(k){sheet(`<div class="t">${AL[k]}</div><p class="m" style="margin:4px 0 14px">اختر طريقة الإدخال</p>
+<button class="opt" onclick="manual('${k}')"><b>✍️</b><span>إدخال يدوي<small>املأ البيانات بنفسك</small></span></button>
+<button class="opt" onclick="fScan('${k}')"><b>📷</b><span>مسح ضوئي Scan<small>ارفع صورة كشف أو ورقة وتُستخرج البيانات تلقائياً</small></span></button>`)}
+function manual(k){k==='n'?fN():k==='r'?fR():fK()}
+function fK(){sheet(`<div class="t">إضافة لاعب للرانك المحلي</div><label>الاسم<input id="k1"></label><label>النادي<input id="k2"></label><label>الفئة<select id="k3">${[...CATS,...PCATS].map(c=>`<option>${c}</option>`).join('')}</select></label><label>النقاط<input id="k4" type="number"></label><button class="btn b" style="margin-top:16px" onclick="saveK()">حفظ في الرانك</button>`)}
+function putK(n,c,cat,pt){const g=PCATS.includes(cat)?'ذوي الهمم':'عام',x=S.P.find(q=>q.s==='محلي'&&q.n===n&&q.cat===cat);if(x){x.p=pt;x.c=c||x.c}else S.P.push({n,c,cat,p:pt,s:'محلي',g})}
+function saveK(){const pt=parseInt(v('k4'));if(!v('k1')||isNaN(pt))return toast('أدخل الاسم والنقاط');putK(v('k1'),v('k2'),v('k3'),pt);closeS();render();toast('تمت الإضافة للرانك')}
+const SD={n:{t:'اللجنة الفنية تعلن موعد معسكر المنتخب الوطني',g:'الاتحاد',b:'أعلنت اللجنة الفنية انطلاق معسكر المنتخب الوطني للكاراتيه بمدينة 6 أكتوبر خلال الأسبوع الأخير من ديسمبر، استعداداً لبطولة أفريقيا المفتوحة.'},
+r:{name:'بطولة الجمهورية للناشئين 2026',c:CATS[5],w:['آدم وليد — نادي الأهلي','يحيى هشام — نادي الزمالك','مالك رامي — نادي الشمس']},
+k:{c:CATS[2],rows:[['عمر خالد','نادي الجزيرة',3120],['مصطفى نبيل','نادي الأهلي',2680],['باسل ياسر','نادي الجيش',2210],['زين محمد','نادي سموحة',1940]]}};
+const paperSvg=()=>`<svg viewBox="0 0 300 170"><rect width="300" height="170" fill="#fff"/><rect x="20" y="14" width="260" height="14" fill="#0F172A"/><rect x="90" y="36" width="120" height="6" fill="#B91C1C"/>${[0,1,2,3,4].map(i=>`<rect x="20" y="${58+i*20}" width="260" height="1.5" fill="#CBD5E1"/><rect x="26" y="${63+i*20}" width="${90+i*8}" height="5" fill="#94A3B8"/><rect x="190" y="${63+i*20}" width="50" height="5" fill="#94A3B8"/>`).join('')}</svg>`;
+function fScan(k){sheet(`<div class="t">مسح ضوئي — ${AL[k]}</div><p class="m" style="margin:4px 0 12px">ارفع صورة الكشف أو الورقة، أو جرّب كشفاً تجريبياً.</p>
+<div id="scT"><label class="dz" for="fi">${ic(I.up,28)}<b>ارفع صورة الكشف</b><span class="m">JPG أو PNG</span></label><input id="fi" type="file" accept="image/*" hidden onchange="pickScan('${k}',this)"><button class="btn o b" onclick="runScan('${k}','')">جرّب بكشف تجريبي</button></div><div id="sc"></div>`)}
+function pickScan(k,i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>runScan(k,r.result);r.readAsDataURL(f)}
+function scanForm(k){const d=SD[k],cs=[...CATS,...PCATS].map(c=>`<option ${c===(d.c||'')?'selected':''}>${c}</option>`).join('');
+ if(k==='n')return `<label>العنوان<input id="s1" value="${esc(d.t)}"></label><label>التصنيف<select id="s2">${['الاتحاد','بطولات','قرارات'].map(x=>`<option ${x===d.g?'selected':''}>${x}</option>`).join('')}</select></label><label>التفاصيل<textarea id="s3" rows="5">${esc(d.b)}</textarea></label>`;
+ if(k==='r')return `<label>البطولة<input id="s1" value="${esc(d.name)}"></label><label>الفئة<select id="s2">${cs}</select></label>${d.w.map((w,i)=>`<label>المركز ${['الأول','الثاني','الثالث'][i]}<input id="s${i+3}" value="${esc(w)}"></label>`).join('')}`;
+ return `<label>الفئة<select id="s0">${cs}</select></label><div class="m" style="margin-top:10px">الاسم · النادي · النقاط</div>${d.rows.map((r,i)=>`<div class="rin"><input id="s${i}a" value="${esc(r[0])}"><input id="s${i}b" value="${esc(r[1])}"><input id="s${i}c" type="number" value="${r[2]}"></div>`).join('')}`}
+function runScan(k,src){document.getElementById('scT').style.display='none';
+ document.getElementById('sc').innerHTML=`<div class="paper">${src?`<img src="${src}" alt="">`:paperSvg()}<i class="laser"></i></div><div class="m" style="text-align:center">جارٍ قراءة الورقة واستخراج البيانات…</div>`;
+ setTimeout(()=>{const e=document.getElementById('sc');if(!e)return;e.innerHTML=`<div class="paper sm">${src?`<img src="${src}" alt="">`:paperSvg()}</div><div class="okb">✓ تم استخراج البيانات تلقائياً — راجعها وعدّل أي خانة قبل النشر</div>${scanForm(k)}<button class="btn b" onclick="pubScan('${k}')">اعتماد ونشر</button>`},1900)}
+function pubScan(k){
+ if(k==='n'){if(!v('s1')||!v('s3'))return toast('أكمل العنوان والتفاصيل');S.N.unshift({id:Date.now(),t:v('s1'),b:v('s3'),tg:v('s2'),dt:'الآن'});S.tab='n'}
+ else if(k==='r'){const w=[v('s3'),v('s4'),v('s5')];if(!v('s1')||w.some(x=>!x))return toast('أكمل بيانات النتيجة');
+  let r=S.R.find(x=>x.name===v('s1'));if(!r){r={id:Date.now(),name:v('s1'),date:'ديسمبر 2026',rows:[]};S.R.unshift(r)}r.rows.unshift({c:v('s2'),w});S.tab='r'}
+ else{for(let i=0;i<4;i++){const pt=parseInt(v('s'+i+'c'));if(v('s'+i+'a')&&!isNaN(pt))putK(v('s'+i+'a'),v('s'+i+'b'),v('s0'),pt)}S.tab='k';S.scope='محلي';S.grp=PCATS.includes(v('s0'))?'ذوي الهمم':'عام';S.cat='الكل'}
+ closeS();render();toast('تم الاعتماد والنشر')}
+/* render */
+function render(){save();const au=document.getElementById('auth');
+ if(!S.auth){au.style.display='block';au.innerHTML=authV();return}
+ au.style.display='none';document.getElementById('lg').innerHTML=logo(34);
+ document.getElementById('ttl').textContent=TABS.find(x=>x[0]===S.tab)[1];
+ const rb=document.getElementById('rb');rb.textContent=RL[S.role];rb.className='badge '+S.role;
+ const pn=isA()?pendN():0;
+ document.getElementById('nav').innerHTML=TABS.map(([k,l])=>`<button class="${S.tab===k?'on':''}" onclick="go('${k}')"><span class="ni"><svg viewBox="0 0 24 24">${IC[k]}</svg>${k==='a'&&pn?`<b class="dot">${pn}</b>`:''}</span>${l}</button>`).join('');
+ document.getElementById('main').innerHTML=({t:vT,n:vN,r:vR,k:vK,a:vA})[S.tab]();
+ const f=document.getElementById('fab'),B={t:['ارفع بطولة',fT],n:['إضافة خبر',()=>addMenu('n')],r:['رفع نتيجة',()=>addMenu('r')],k:S.scope==='محلي'?['إضافة للرانك',()=>addMenu('k')]:null}[S.tab];
+ if(isA()&&B){f.style.display='flex';f.innerHTML=ic(I.plus,22)+'<span>'+B[0]+'</span>';f.onclick=()=>B[1]()}else f.style.display='none'}
+
+render();
+</script>
+</body>
+</html>
